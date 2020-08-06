@@ -44,6 +44,9 @@ function update() {
 
 // GAME LOOP 
 function loop() {
+    // CLEAR CANVAS
+    ctx.drawImage(BG_IMG, 0, 0);
+
     draw();
     update();
 
