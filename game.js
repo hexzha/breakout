@@ -31,5 +31,21 @@ function drawPaddle() {
     ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
 }
 
-drawPaddle();
+// DRAW FUNCTION
+function draw() {
+    drawPaddle();
 
+}
+
+// UPDATE GAME FUNCTION
+function update() {
+
+}
+
+// GAME LOOP 
+function loop() {
+    draw();
+    update();
+
+    requestAnimationFrame(loop);
+}
