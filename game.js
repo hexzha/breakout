@@ -12,6 +12,7 @@ ctx.lineWidth = 3;
 const PADDLE_WIDTH = 100;
 const PADDLE_MARGIN_BOTTOM = 50;
 const PADDLE_HEIGHT = 20;
+const BALL_RADIUS = 8;
 let leftArrow = false;
 let rightArrow = false;
 
@@ -59,9 +60,34 @@ document.addEventListener("keyup", function(event) {
     }
 });
 
+// CREATE BALL
+const ball = {
+    x : cvs.width/ 2, 
+    y : paddle.y - BALL_RADIUS, 
+    radius : BALL_RADIUS, 
+    dx : 3, 
+    dy : -3
+}
+
+// DRAW BALL
+function drawBall() {
+    ctx.beginPath();
+
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffcd05";
+    ctx.fill();
+
+    ctx.strokeStyle = "#2e3548";
+    ctx.stroke();
+
+    ctx.closePath();
+} 
+
 // DRAW FUNCTION
 function draw() {
     drawPaddle();
+
+    drawBall();
 }
 
 // UPDATE GAME FUNCTION
