@@ -13,6 +13,7 @@ const PADDLE_WIDTH = 100;
 const PADDLE_MARGIN_BOTTOM = 50;
 const PADDLE_HEIGHT = 20;
 const BALL_RADIUS = 8;
+let LIFE = 3; //PLAYER HAS 3 LIFES
 let leftArrow = false;
 let rightArrow = false;
 
@@ -65,8 +66,32 @@ const ball = {
     x : cvs.width/ 2, 
     y : paddle.y - BALL_RADIUS, 
     radius : BALL_RADIUS, 
-    dx : 3, 
+    dx : 3 * (Math.random() * 2 - 1), 
     dy : -3
+}
+
+// BALL AND WALL COLLISION DETECTION
+function ballWallCollision() {
+    if(ball.x + ball.radius > cvs.width || ball.x - ball.radius < 0) {
+        ball.dx = - ball.dx;
+    }
+
+    if(ball.y - ball.radius < 0) {
+        ball.dy = - ball.dy; 
+    }
+
+    if(ball.y + ball.radius > cvs.height) {
+        LIFE--;
+        resetBall();
+    }
+}
+
+// RESET BALL
+function resetBall() {
+    ball.x = cvs.width /2;
+    ball.y = paddle.y - BALL_RADIUS;
+    ball.dx = 3 * (Math.random() * 2 - 1); 
+    ball.dy = -3;
 }
 
 // DRAW BALL
@@ -78,10 +103,16 @@ function drawBall() {
     ctx.fill();
 
     ctx.strokeStyle = "#2e3548";
-    ctx.stroke();
+    ctx.stroke()
 
     ctx.closePath();
 } 
+
+// MOVE BALL
+function moveBall() {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+}
 
 // DRAW FUNCTION
 function draw() {
@@ -93,7 +124,10 @@ function draw() {
 // UPDATE GAME FUNCTION
 function update() {
     movePaddle();
+    moveBall();
+    ballWallCollision();
 }
+
 
 // GAME LOOP 
 function loop() {
