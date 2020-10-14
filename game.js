@@ -37,50 +37,51 @@ function drawPaddle() {
 
 // CONTROL PADDLE
 document.addEventListener("keydown", function(event) {
-    if(event.keyCode == 37) {
+    if (event.keyCode == 37) {
         leftArrow = true;
-    } else if(event.keyCode == 39) {
+    } else if (event.keyCode == 39) {
         rightArrow = true;
     }
 });
 
 // MOVE PADDLE
 function movePaddle() {
-    if(leftArrow && paddle.x > 0) {
+    if (leftArrow && paddle.x > 0) {
         paddle.x -= paddle.dx;
-    } else if(rightArrow && (paddle.x + paddle.width) < cvs.width) {
-        paddle.x += paddle.dx; 
+    } else if (rightArrow && (paddle.x + paddle.width) < cvs.width) {
+        paddle.x += paddle.dx;
     }
 }
 
 document.addEventListener("keyup", function(event) {
-    if(event.keyCode == 37) {
+    if (event.keyCode == 37) {
         leftArrow = false;
-    } else if(event.keyCode == 39) {
+    } else if (event.keyCode == 39) {
         rightArrow = false;
     }
 });
 
 // CREATE BALL
 const ball = {
-    x : cvs.width/ 2, 
-    y : paddle.y - BALL_RADIUS, 
-    radius : BALL_RADIUS, 
-    dx : 3 * (Math.random() * 2 - 1), 
-    dy : -3
+    x: cvs.width / 2,
+    y: paddle.y - BALL_RADIUS,
+    radius: BALL_RADIUS,
+    speed: 4,
+    dx: 3 * (Math.random() * 2 - 1),
+    dy: -3
 }
 
 // BALL AND WALL COLLISION DETECTION
 function ballWallCollision() {
-    if(ball.x + ball.radius > cvs.width || ball.x - ball.radius < 0) {
-        ball.dx = - ball.dx;
+    if (ball.x + ball.radius > cvs.width || ball.x - ball.radius < 0) {
+        ball.dx = -ball.dx;
     }
 
-    if(ball.y - ball.radius < 0) {
-        ball.dy = - ball.dy; 
+    if (ball.y - ball.radius < 0) {
+        ball.dy = -ball.dy;
     }
 
-    if(ball.y + ball.radius > cvs.height) {
+    if (ball.y + ball.radius > cvs.height) {
         LIFE--;
         resetBall();
     }
@@ -88,9 +89,9 @@ function ballWallCollision() {
 
 // RESET BALL
 function resetBall() {
-    ball.x = cvs.width /2;
+    ball.x = cvs.width / 2;
     ball.y = paddle.y - BALL_RADIUS;
-    ball.dx = 3 * (Math.random() * 2 - 1); 
+    ball.dx = 3 * (Math.random() * 2 - 1);
     ball.dy = -3;
 }
 
@@ -106,12 +107,29 @@ function drawBall() {
     ctx.stroke()
 
     ctx.closePath();
-} 
+}
 
 // MOVE BALL
 function moveBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
+}
+
+// BALL PADDLE COLLISION
+function ballPaddleCollision() {
+    if (ball.x < paddle.x + paddle.width && ball.x > paddle.x && ball.y < paddle.y + paddle.height && ball.y > paddle.y) {
+        // CHECK WHERE BALL HIT THE PADDLE
+        let collidePoint = ball.x - (paddle.x + paddle.width / 2);
+
+        // NORMALIZE COLLIDE POINT
+        collidePoint = collidePoint / (paddle.width / 2);
+
+        // CALCULATE THE ANGLE OF THE BALL
+        let angle = collidePoint * Math.PI / 3;
+
+        ball.dx = ball.speed * Math.sin(angle);
+        ball.dy = -ball.speed * Math.cos(angle);
+    }
 }
 
 // DRAW FUNCTION
@@ -123,9 +141,10 @@ function draw() {
 
 // UPDATE GAME FUNCTION
 function update() {
-    movePaddle();
+    movePaddle()
     moveBall();
     ballWallCollision();
+    ballPaddleCollision();
 }
 
 
@@ -133,7 +152,6 @@ function update() {
 function loop() {
     // CLEAR CANVAS
     ctx.drawImage(BG_IMG, 0, 0);
-
     draw();
     update();
 
