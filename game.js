@@ -132,6 +132,19 @@ function ballPaddleCollision() {
     }
 }
 
+// CREATE THE BRICKS
+const brick = {
+    row : 3, 
+    column : 5, 
+    width : 55, 
+    height : 20, 
+    offSetLeft : 20, 
+    offSetTop : 20, 
+    marginTio : 40, 
+    fillColor : "2e3548", 
+    strokeColor : "#FFF"
+}
+
 // DRAW FUNCTION
 function draw() {
     drawPaddle();
