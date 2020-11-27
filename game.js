@@ -145,6 +145,8 @@ const brick = {
     strokeColor : "#FFF"
 }
 
+let bricks = [];
+
 // DRAW FUNCTION
 function draw() {
     drawPaddle();
