@@ -147,6 +147,10 @@ const brick = {
 
 let bricks = [];
 
+function createBricks() {
+    
+}
+
 // DRAW FUNCTION
 function draw() {
     drawPaddle();
