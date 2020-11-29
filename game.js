@@ -148,7 +148,9 @@ const brick = {
 let bricks = [];
 
 function createBricks() {
-    
+   for(let r = 0; r < brick.row; r++) {
+
+   }
 }
 
 // DRAW FUNCTION
