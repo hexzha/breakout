@@ -151,7 +151,9 @@ function createBricks() {
     for(let r = 0; r < brick.row; r++) {
         bricks[r] = [];
         for( let c = 0; c < brick.column; c++) {
-
+            brick[r][c] = {
+                
+            }
         }
     }
 }
